@@ -37,7 +37,7 @@
   },
   "homepage": "https://github.com/mattaharish/fastify-boilerplate#readme",
   "devDependencies": {
-    "eslint": "^8.35.0",
+    "eslint": "^8.57.0",
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^8.7.0",
     "eslint-plugin-node": "^11.1.0",
