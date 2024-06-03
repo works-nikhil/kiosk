@@ -8,7 +8,11 @@ async function getMenuByLocationHandler(request, reply) {
   try {
     const menuItems = await getMenuByLocation(request.server.knex, locationId);
     const nestedMenu = transformToNestedStructure(menuItems);
-    reply.send(nestedMenu);
+    reply.status(200).send({
+      status: 'success',
+      message: 'Menu retrieved successfully',
+      data: nestedMenu
+    });
   } catch (error) {
     reply.status(500).send({ error: error.message });
   }
