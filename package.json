@@ -30,7 +30,7 @@
     "docker",
     "prometheus"
   ],
-  "author": "Harish Matta",
+  "author": "Nikhil Bhojwani",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/mattaharish/fastify-boilerplate/issues"
