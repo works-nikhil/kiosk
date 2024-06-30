@@ -12,6 +12,8 @@ const lib = require('./lib');
 const routes = require('./app/routes');
 const { requestContext, onResponse, appendPayloadToResponse } = require('./hooks');
 const setupGracefulShutdown = require('./shutdown');
+const fastifySocketIo = require('fastify-socket.io');
+const orderService = require('./app/food/services/orderService');
 
 const underPressureConfig = () => {
   return {
@@ -49,11 +51,30 @@ const init = async ({ config }) => {
     disableRequestLogging: true
   });
   app.decorate('config', config);
+  app.register(cors, { origin: '*' });
+  app.register(fastifySocketIo, {
+    cors: {
+      origin: ['https://kiosk-ashy.vercel.app'],
+      methods: ['GET', 'POST', 'OPTIONS', 'DELETE', 'PUT'],
+      allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
+      credentials: true // If your frontend sends credentials like cookies
+    }
+  });
   // app.register(cors, {
   //   origin: ['https://kiosk-ashy.vercel.app'], // Replace with your frontend origin
   //   methods: ['GET', 'POST', 'OPTIONS', 'DELETE', 'PUT'],
   //   allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization']
   // });
+  app.ready().then(() => {
+    app.io.on('connection', socket => {
+      app.log.info('New client connected');
+      socket.on('disconnect', () => {
+        app.log.info('Client disconnected');
+      });
+    });
+    orderService.setIoInstance(app.io);
+  });
+
   app.register(helmet, {
     noCache: true,
     policy: 'same-origin',

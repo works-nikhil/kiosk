@@ -1,6 +1,11 @@
 'use strict';
 
 const { TABLE_NAMES } = require('../../common/constants.js');
+let io;
+
+function setIoInstance(ioInstance) {
+  io = ioInstance;
+}
 
 const placeOrder = async (knex, locationId, items) => {
   try {
@@ -24,6 +29,10 @@ const placeOrder = async (knex, locationId, items) => {
       await trx(TABLE_NAMES.ORDER_ITEMS).insert(orderItems);
     });
 
+    io.emit('newOrder', {
+      message: 'New order placed'
+    });
+
     return orderId;
   } catch (error) {
     throw new Error('Failed to place order: ' + error.message);
@@ -31,5 +40,6 @@ const placeOrder = async (knex, locationId, items) => {
 };
 
 module.exports = {
-  placeOrder
+  placeOrder,
+  setIoInstance
 };
