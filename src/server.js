@@ -51,7 +51,7 @@ const init = async ({ config }) => {
     disableRequestLogging: true
   });
   app.decorate('config', config);
-  app.register(cors, { origin: '*' });
+  // app.register(cors, { origin: '*' });
   app.register(cors, {
     origin: ['https://kiosk-ashy.vercel.app'], // Replace with your frontend origin
     methods: ['GET', 'POST', 'OPTIONS', 'DELETE', 'PUT'],
