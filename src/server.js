@@ -52,14 +52,7 @@ const init = async ({ config }) => {
   });
   app.decorate('config', config);
   app.register(cors, { origin: '*' });
-  app.register(fastifySocketIo, {
-    cors: {
-      origin: ['https://kiosk-ashy.vercel.app'],
-      methods: ['GET', 'POST', 'OPTIONS', 'DELETE', 'PUT'],
-      allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
-      credentials: true // If your frontend sends credentials like cookies
-    }
-  });
+  app.register(fastifySocketIo);
   // app.register(cors, {
   //   origin: ['https://kiosk-ashy.vercel.app'], // Replace with your frontend origin
   //   methods: ['GET', 'POST', 'OPTIONS', 'DELETE', 'PUT'],
